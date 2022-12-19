@@ -1,0 +1,320 @@
+---
+title: "COVILD dyslipidemia/dysglycemia"
+subtitle: "Revision figures"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+
+output: 
+  bookdown::word_document2:   
+    reference_docx: ms_template.docx
+
+bibliography: covild_biblio.bib
+
+csl: frontiers-in-immunology.csl
+
+header-includes:
+  \usepackage{longtable}
+  \usepackage{tabu}
+  \usepackage{caption}
+  \usepackage{makecell}
+  \usepackage{pdflscape}
+  \usepackage{array}
+  \usepackage{booktabs}
+  \usepackage{threeparttable}
+  \usepackage{threeparttablex}
+  \usepackage{wrapfig}
+  \usepackage{multirow}
+  \usepackage[normalem]{ulem}
+  \usepackage{colortbl}
+  \usepackage{xcolor}
+  \usepackage{float} \floatplacement{figure}{H} \floatplacement{table}{H}
+  \newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}}       \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
+---
+
+```{r, setup, include = FALSE}
+
+library(bookdown)
+library(flextable)
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, 
+                      dev = "png", dpi = 600, 
+                      tab.cap.pre = 'Supplementary Table ', tab.cap.sep = " ", 
+                      tab.cap.style = 'Table Heading')
+
+set_flextable_defaults(font.family = 'Cambria', font.size = 10)
+
+
+```
+
+\newpage
+
+# Methods
+
+## Analysis software
+
+The study data set was handled and analyzed with R version 4.2.0. 
+Handling and transformation of tabular data was accomplished by the packages _tidyverse_ [@Wickham2019], _rlang_ [@Henry2022] and the development package _trafo_ (https://github.com/PiotrTymoszuk/trafo). 
+Text data were handled (search, extraction, replacement) with _stringi_ [@Gagolewski2021]. 
+For descriptive statistic, correlation analysis and statistical hypothesis testing, the packages _rstatix_ [@Kassambara2021] and _ExDA_ (https://github.com/PiotrTymoszuk/ExDA) were employed. 
+Ordinal logistic modeling and model diagnostic was done with _MASS_ [@Ripley2022], _broom_ [@Robinson2014], _caret_ [@Kuhn2008] and the development packages _lmqc_ (https://github.com/PiotrTymoszuk/lmqc) and _caretExtra_ (https://github.com/PiotrTymoszuk/caretExtra).
+
+Results were visualized with the packages _ggplot_ [@Wickham2016], _ExDA_ and _cowplot_ [@Wilke2019]. 
+Tables were created with _flextable_ [@Gohel2022]. 
+Parts of the manuscript and supplementary material were written in the _rmarkdown_ environment [@Allaire2022]. 
+Tables and figures were handled (insertion and reference) with the development package _figur_ (https://github.com/PiotrTymoszuk/figur). 
+Text parts were rendered as Word and PDF documents with _bookdown_ [@Xie2016] and _knitr_ [@Xie2022].
+
+## Variable transformation
+
+Participants were dichotomized according to the age cutoff of 60 years. 
+Overweight was defined as body mass index (BMI) > 25 $kg/m^2$, obesity as BMI > 30 $kg/m^2$. 
+Dyslipidemia was defined with triglycerides (TG) > 150 mg/dL or low high density lipoprotein (HDL, < 40 mg/dL for males or HDL < 50 mg/dL females). 
+Dysglycemia was defined as HbA1c ≥ 5.7%. 
+Participants were classified according to acute COVID-19 severity as mild (WHO ordinal scale for clinical improvement: 1 - 2), 
+moderate (WHO: 3 - 4) and severe (WHO: $\geq$ 5). 
+Elevated C-reactive protein (CRP, > 0.5 mg/dL), interleukin 6 (IL6, > 7 pg/mL) and TG (> 150 mg/dL) were defined with standard cutoffs. 
+Chest CT abnormalities were classified as none (CT severity score [CTSS]: 0), mild (CTSS: 1 - 5), moderate (CTSS: 6 - 10) and severe (CTSS: $\geq$ 11) [@Luger2022]. 
+Some variables were in addition transformed with the log function to improve normality and homogeneity of variances as described below. 
+The full list of study variables with stratification scheme and levels in the entire cohort and COVID-19 severity strata is provided in __Table \@ref(tab:tab-cohort)__.
+
+## Explorative data analysis, normality and variance homogeneity testing
+
+Descriptive statistic of the study variables and differences between the COVID-19 severity strata were investigated with the _ExDA_ and _rstatix_ [@Kassambara2021] packages. 
+Differences in categorical variables between the COVID-19 severity strata were assessed by $\chi^2$ test with Cramer V effect size statistic. 
+Differences in numeric variables between the COVID-19 severity strata were investigated by Kruskal-Wallis test with $\eta^2$ effect size statistic. 
+
+Normality of numeric variable distribution in groups defined by age class and COVID-19 severity or dyslipidemia/dysglycemia status and follow-up was assessed with Shapiro-Wilk test. 
+Homogeneity of variances in these strata was investigated by Levene test. 
+Distribution testing was performed with _ExDA_ and _rstatix_ [@Kassambara2021].
+D-dimer (DDimer), ferritin (FT), HDL, adiponectin (ADIPOQ) and leptin (LEP) concentrations were log-transformed to improve normality prior to modeling. 
+IL6, CRP and TG were dichotomized with the cutoffs described above to meet the ordinal logistic regression assumptions.
+
+## Correlation and time course analyis
+
+Pair-wise association of non-transformed levels of metabolic (TG, HDL, ADIPOQ, LEP) and inflammatory bio-markers (CRP, IL6, DDimer, FT) was analyzed by Spearman's correlation (package _ExDA_). 
+
+Changes in non-transformed levels of inflammatory and metabolic bio-markers between consecutive follow-ups in participant strata defined by the dyslipidemia and dysglycemia status were investigated by Friedman test with Kendall's W effect size statistic (_rstatix_) [@Kassambara2021]. 
+Differences between the strata at specific follow-ups were assessed by Holm-corrected Mann-Whitney U post-hoc test (_ExDA_). 
+
+## Ordinal logistic modeling
+
+Classes of chest CT abnormality were defined as described above. 
+Effects of inflammatory bio-markers (CRP, IL6, DDimer, FT), metabolic parameters (TG, HDL, ADIPOQ, LEP) and metabolic disorders (obesity, dyslipidemia, dysglycemia) on severity of chest CT abnormalities at the 60-day follow-up were investigated by ordinal logistic modeling (package _MASS_) [@Ripley2022]. 
+Three types of models were constructed for each explanatory variable: (1) uni-variable models, (2) models including age class and sex as confounders, and (3) models including age class, sex and acute COVID-19 severity as confounders (package _lmqc_). 
+The confounders selected for analysis are canonical risk factors of persistent chest CT abnormality (__Figure \@ref(fig:fig-confounder-V0)__, __Table \@ref(tab:tab-conf-models)__ and __\@ref(tab:tab-conf-models)__). 
+Normality and homogeneity of variance of the model residuals were assessed by Shapiro-Wilk and Levene tests, respectively (packages _lmqc_ and _broom_) [@Robinson2014]. 
+Proportionality of odds was gauged by Brant test (package _brant_) [@Brant1990; @Schlegel2022]. 
+Metrics of classification performance of the models (classification error, Cohen's $\kappa$ and confusion matrix) were computed with the _caret_ package tools [@Kuhn2008] (__Table \@ref(tab:tab-explanatory-fit)__). 
+Finally, model coefficient estimates expressed as odds ratios (OR) and their confidence intervals were extracted. 
+OR significance (OR $\neq$ 1) was determined by two-tailed T test (__Table \@ref(tab:tab-explanatory)__). 
+
+Multi-parameter modeling of chest CT abnormality severity was done by ordinal logistic regression with Akaike information criterion (AIC) driven backwards elimination of non-significant terms as described by us recently in the COVILD study data set [@Luger2022]. 
+Briefly, full models including age class, sex, acute COVID-19 severity, CRP, IL6, DDimer, FT, TG, HDL, ADIPOQ, LEP, obesity, dyslipidemia and dysglycemia at the 60-day follow-up were constructed. 
+The full models were subsequently optimized by backwards elimination (function `stepAIC()`, package _MASS_) [@Ripley2022]. 
+Assumptions of the model residuals distributions, classification performance and inference were analyzed as described above. 
+Reproducibility and proper parameterization of the models was investigated with cross-validation (10-fold, 50 repeats, packages _caret_ and _caretExtra_) [@Kuhn2008]. 
+As demonstrated in __Figure \@ref(fig:fig-fit-stats)__, comparable classification errors and $\kappa$ accuracy statistics of the models in the training data set and cross-validation suggest that none of the multi-paramater models suffered from overfitting.
+
+
+## Data and code availability
+
+The anonymized study data set will be provided on request to the corresponding author. 
+The R analysis pipeline is available at https://github.com/PiotrTymoszuk/covild_metabolic.
+
+\newpage
+
+# Tables
+
+```{r tab-cohort, tab.cap = 'Characteristic of the study cohort: demographic background, medical history, COVID-19 severity, inflammatory and metabolic parameters. Numeric variables are shown as medians with interquartile ranges. Categorical variables are presented as percentages and counts within the complete observation set. The table is available as a supplementary Excel file.'}
+
+tables$cohort[1, 1] %>% 
+  mutate(Variable = '') %>% 
+  set_names(c(' ')) %>% 
+  flextable
+
+```
+
+\newpage
+
+```{r tab-conf-models, tab.cap = 'Classification error and accuracy of logistic ordinal modeling of chest CT abnormality severity at the day 60 follow-up as a function of age, sex and COVID-19 severity.'}
+
+flextable::flextable(tables$counfounder_fit) %>% 
+  width(1:2, width = 4, unit = 'cm') %>% 
+  theme_vanilla
+
+```
+
+\newpage
+
+```{r tab-confounders, tab.cap = 'Results of logistic ordinal modeling of chest CT abnormality severity at the day 60 follow-up as a function of age, sex and COVID-19 severity. Odds ratios (OR) with 95% confidence intervals, p values, numbers of cases in the strata and the total observation counts are presented.'}
+
+flextable::flextable(tables$confounders) %>% 
+  width(1:3, width = 4, unit = 'cm') %>% 
+  merge_v(1) %>% 
+  theme_vanilla
+
+```
+
+\newpage
+
+```{r tab-explanatory-fit, tab.cap = 'Classification error and accuracy of logistic ordinal modeling of chest CT abnormality severity at the day 60 follow-up as a function of inflammatory and metabolic parameters.'}
+
+flextable::flextable(tables$explanatory_fit) %>% 
+  width(1, width = 4, unit = 'cm') %>% 
+  width(2:4, width = 4.5, unit = 'cm') %>% 
+  footnote(9, 1, 
+           value = as_paragraph('body mass index (BMI) > 30 kg/m\u00B2'), 
+           part = 'body', 
+           ref_symbols = 'a') %>% 
+  footnote(10, 1, 
+           value = as_paragraph('TG > 150 mg/dL or HDL < 40 mg/dL (male) or HDL < 50 mg/dL (female)'), 
+           part = 'body', 
+           ref_symbols = 'b') %>% 
+  footnote(11, 1, 
+           value = as_paragraph('HbA1c ≥ 5.7%'), 
+           part = 'body', 
+           ref_symbols = 'c') %>% 
+  theme_vanilla
+
+```
+
+\newpage
+
+```{r tab-explanatory, tab.cap = 'Results of logistic odinal modeling of chest CT abnormality severity at the day 60 follow-up as a function of inflammatory and metabolic parameters. Odds ratios (OR) with 95% confidence intervals, p values, numbers of cases in the strata and the total observation counts are presented for univariable/unadjusted models, age/sex- and age/sex/severity-adjusted models.'}
+
+flextable::flextable(tables$explanatory) %>% 
+  width(1, width = 3, unit = 'cm') %>% 
+  width(2, width = 2.5, unit = 'cm') %>% 
+  width(3:5, width = 4, unit = 'cm') %>% 
+  footnote(9, 1, 
+           value = as_paragraph('body mass index (BMI) > 30 kg/m\u00B2'), 
+           part = 'body', 
+           ref_symbols = 'a') %>% 
+  footnote(10, 1, 
+           value = as_paragraph('TG > 150 mg/dL or HDL > 40 mg/dL (male) or HDL > 50 mg/dL (female)'), 
+           part = 'body', 
+           ref_symbols = 'b') %>% 
+  footnote(11, 1, 
+           value = as_paragraph('HbA1c ≥ 5.7%'), 
+           part = 'body', 
+           ref_symbols = 'c') %>% 
+  theme_vanilla
+
+```
+
+
+
+\newpage
+
+# Figures
+
+```{r fig-confounder-V0, fig.width = mm_inch(figures$confounder_V0$w), fig.height = mm_inch(figures$confounder_V0$h), fig.cap = 'Results of logistic ordinal modeling of chest CT abnormality severity at the 60-day follow-up as a function of age, sex and COVID-19 severity'}
+
+figures$confounder_V0$plot
+
+```
+
+__Figure \@ref(fig:fig-confounder-V0). Results of logistic ordinal modeling of chest CT abnormality severity at the 60-day follow-up as a function of age, sex and COVID-19 severity__ 
+_Chest CT abnormalities were classified as none (CT severity score [CTSS]: 0), mild (CTSS: 1 - 5), moderate (CTSS: 6 - 10) and severe (CTSS: $\geq$ 11). Effects of participant age class (below/above 60 years), sex and acute COVID-19 severity (mild/moderate/severe) on chest CT abnormality severity at the 60-day follow-up were assessed by univariable ordinal logistic regression. Odds ratio (OR) with 95% confidence intervals (CI) are shown in a Forest plot. Point color codes for significance and model estimate sign. Points are labeled with OR and 95% CI values._
+
+\newpage
+
+```{r fig-explanatory-V0, fig.width = mm_inch(figures$explanatory_V0$w), fig.height = mm_inch(figures$explanatory_V0$h), fig.cap = 'Results of logistic ordinal modeling of chest CT abnormality severity at the 60-day follow-up as a function of inflammatory and metabolic parameters.'}
+
+figures$explanatory_V0$plot
+
+```
+
+__Figure \@ref(fig:fig-explanatory-V0). Results of logistic ordinal modeling of chest CT abnormality severity at the 60-day follow-up as a function of inflammatory and metabolic parameters.__ 
+_Chest CT abnormalities were classified as none (CT severity score [CTSS]: 0), mild (CTSS: 1 - 5), moderate (CTSS: 6 - 10) and severe (CTSS: $\geq$ 11). Effects of inflammatory (C-reactive protein [CRP], interleukin 6 [IL6], D-dimer [DDimer], ferritin [FT]), metabolic bio-markers (triglycerides [TG], high density lipoprotein [HDL], adiponectin [ADIPOQ], leptin [LEP]) and metabolic disorders (obesity, dyslipidemia and dysglycemia) recorded at the 60-day follow-up on chest CT abnormality severity at the 60-day follow-up were assessed by ordinal logistic regression. Odds ratio (OR) with 95% confidence intervals (CI) for the explanatory variables in univariable models (A), models adjusted for age class and sex (B) and models adjusted for age class, sex and acute COVID-19 severity (C) are shown in Forest plots. Point color codes for significance and model estimate sign. Points are labeled with OR and 95% CI values._
+
+\newpage
+
+```{r fig-correlations, fig.width = mm_inch(figures$correlations$w), fig.height = mm_inch(figures$correlations$h), fig.cap = 'Correlation of metabolic and inflammatory parameters at the 60-, 100-, 180- and 360-day follow-up.'}
+
+figures$correlations$plot
+
+```
+
+__Figure \@ref(fig:fig-correlations). Correlation of metabolic and inflammatory parameters at the 60-, 100-, 180- and 360-day follow-up.__ 
+_Correlation of inflammatory (C-reactive protein [CRP], interleukin 6 [IL6], D-dimer [DDimer], ferritin [FT]), metabolic bio-markers (triglycerides [TG], high density lipoprotein [HDL], adiponectin [ADIPOQ], leptin [LEP]) at the 60 (A), 100 (B), 180 (C) and 360-day follow-up (D) was investigated by Spearman test. Correlation coefficient ($\rho$) are presented in bubble plots. Point size represents the absolute value of $\rho$, point color codes for the $\rho$ value. Points are labeled with the $\rho$ values. The values for significant correlations are highlighted in bold._
+
+\newpage
+
+```{r fig-inflammation-tc-dyslipi, fig.width = mm_inch(figures$inflammation_tc_dyslipi$w), fig.height = mm_inch(figures$inflammation_tc_dyslipi$h), fig.cap = 'Time course of inflammatory parameters at the 60-, 100-, 180- and 360-day follow-up in study participants with normal lipid profile and dyslipidemia at the 60-day visit.'}
+
+figures$inflammation_tc_dyslipi$plot
+
+```
+
+__Figure \@ref(fig:fig-inflammation-tc-dyslipi). Time course of inflammatory parameters at the 60-, 100-, 180- and 360-day follow-up in study participants with normal lipid profile and dyslipidemia at the 60-day visit.__ 
+_Blood concentrations of inflammatory bio-markers C-reactive protein (CRP, A), interleukin 6 (IL6, B), D-dimer (DDimer, C), ferritin (FT, D) at the consecutive follow-ups in participants with normal lipid profile and dyslipidemia. Only participants with the complete longitudinal measurement set were included in the analysis. Significance of changes in the concentrations in time was determined for each of the strata by Friedman test with Kendall's W effect size statistic. Differences between the strata at specific follow-ups were assessed by Holm-corrected Mann-Whitney post-hoc test. Median concentrations with interquartile ranges (IQR) are presented in box plots, whiskers span over 150% IQR. Points represent single observations. Effect size statistic and Friedman test p values are displayed in the plot captions. Significant results of the post-hoc test are shown in the plots. Numbers of complete observations are indicated under the plots._
+
+\newpage
+
+```{r fig-metabolic-tc-dyslipi, fig.width = mm_inch(figures$metabolic_tc_dyslipi$w), fig.height = mm_inch(figures$metabolic_tc_dyslipi$h), fig.cap = 'Time course of metabolic parameters at the 60-, 100-, 180- and 360-day follow-up in study participants with normal lipid profile and dyslipidemia at the 60-day visit.'}
+
+figures$metabolic_tc_dyslipi$plot
+
+```
+
+__Figure \@ref(fig:fig-metabolic-tc-dyslipi). Time course of metabolic parameters at the 60-, 100-, 180- and 360-day follow-up in study participants with normal lipid profile and dyslipidemia at the 60-day visit.__ 
+_Blood concentrations of metabolic bio-markers triglycerides (TG, A), high density lipoprotein (HDL, B), adiponectin (ADIPOQ, C) and leptin (LEP, D) at the consecutive follow-ups in participants with normal lipid profile and dyslipidemia. Only participants with the complete longitudinal measurement set were included in the analysis. Significance of changes in the concentrations in time was determined for each of the strata by Friedman test with Kendall's W effect size statistic. Differences between the strata at specific follow-ups were assessed by Holm-corrected Mann-Whitney post-hoc test. Median concentrations with interquartile ranges (IQR) are presented in box plots, whiskers span over 150% IQR. Points represent single observations. Effect size statistic and Friedman test p values are displayed in the plot captions. Significant results of the post-hoc test are shown in the plots. Numbers of complete observations are indicated under the plots._
+
+\newpage
+
+```{r fig-inflammation-tc-dysgly, fig.width = mm_inch(figures$inflammation_tc_dysgly$w), fig.height = mm_inch(figures$inflammation_tc_dysgly$h), fig.cap = 'Time course of inflammatory parameters at the 60-, 100-, 180- and 360-day follow-up in study participants with normal glucose and dysglycemia at the 60-day visit.'}
+
+figures$inflammation_tc_dysgly$plot
+
+```
+
+__Figure \@ref(fig:fig-inflammation-tc-dysgly). Time course of inflammatory parameters at the 60-, 100-, 180- and 360-day follow-up in study participants with normal glucose and dysglycemia at the 60-day visit.__ 
+_Blood concentrations of inflammatory bio-markers C-reactive protein (CRP, A), interleukin 6 (IL6, B), D-dimer (DDimer, C), ferritin (FT, D) at the consecutive follow-ups in participants with normal glycemia and dysglycemia Only participants with the complete longitudinal measurement set were included in the analysis. Significance of changes in the concentrations in time was determined for each of the strata by Friedman test with Kendall's W effect size statistic. Differences between the strata at specific follow-ups were assessed by Holm-corrected Mann-Whitney post-hoc test. Median concentrations with interquartile ranges (IQR) are presented in box plots, whiskers span over 150% IQR. Points represent single observations. Effect size statistic and Friedman test p values are displayed in the plot captions. Significant results of the post-hoc test are shown in the plots. Numbers of complete observations are indicated under the plots._
+
+\newpage
+
+```{r fig-metabolic-tc-dysgly, fig.width = mm_inch(figures$metabolic_tc_dysgly$w), fig.height = mm_inch(figures$metabolic_tc_dysgly$h), fig.cap = 'Time course of metabolic parameters at the 60-, 100-, 180- and 360-day follow-up in study participants with normal glucose and dysglycemia at the 60-day visit.'}
+
+figures$metabolic_tc_dysgly$plot
+
+```
+
+__Figure \@ref(fig:fig-metabolic-tc-dysgly). Time course of metabolic parameters at the 60-, 100-, 180- and 360-day follow-up in study participants with normal glucose and dysglycemia at the 60-day visit.__ 
+_Blood concentrations of metabolic bio-markers triglycerides (TG, A), high density lipoprotein (HDL, B), adiponectin (ADIPOQ, C) and leptin (LEP, D) at the consecutive follow-ups in participants with normal glycemia and dysglycemia. Only participants with the complete longitudinal measurement set were included in the analysis. Significance of changes in the concentrations in time was determined for each of the strata by Friedman test with Kendall's W effect size statistic. Differences between the strata at specific follow-ups were assessed by Holm-corrected Mann-Whitney post-hoc test. Median concentrations with interquartile ranges (IQR) are presented in box plots, whiskers span over 150% IQR. Points represent single observations. Effect size statistic and Friedman test p values are displayed in the plot captions. Significant results of the post-hoc test are shown in the plots. Numbers of complete observations are indicated under the plots._
+
+\newpage
+
+```{r fig-ctss-tc, fig.width = mm_inch(figures$ctss_tc$w), fig.height = mm_inch(figures$ctss_tc$h), fig.cap = 'Time course of chest CT severity score at the 60-, 100-, 180- and 360-day follow-up in study participants with normal metabolic profile, dyslipidemia and dysglycemia at the 60-day visit.'}
+
+figures$ctss_tc$plot
+
+```
+
+__Figure \@ref(fig:fig-ctss-tc). Time course of chest CT severity score at the 60-, 100-, 180- and 360-day follow-up in study participants with normal metabolic profile, dyslipidemia and dysglycemia at the 60-day visit.__ 
+_Chest CT abnormality severity was assessed with CT severity score (CTSS) at the consecutive follow-ups in participants with normal lipid profile and dysglycemia (A) and in participants with normal glycemia and dysglycemia (B). Only participants with the complete longitudinal measurement set were included in the analysis. Significance of changes in the concentrations in time was determined for each of the strata by Friedman test with Kendall's W effect size statistic. Differences between the strata at specific follow-ups were assessed by Holm-corrected Mann-Whitney post-hoc test. Median concentrations with interquartile ranges (IQR) are presented in box plots, whiskers span over 150% IQR. Points represent single observations. Effect size statistic and Friedman test p values are displayed in the plot captions. Significant results of the post-hoc test are shown in the plots. Numbers of complete observations are indicated under the plots._
+
+\newpage
+
+```{r fig-fit-stats, fig.width = mm_inch(figures$fit_stats$w), fig.height = mm_inch(figures$fit_stats$h), fig.cap = 'Accuracy of chest CT abnormality severity prediction by multi-parameter ordinal logistic modeling at 60-, 100-, 180- and 360-day follow-up.'}
+
+figures$fit_stats$plot
+
+```
+
+__Figure \@ref(fig:fig-fit-stats). Accuracy of chest CT abnormality severity prediction by multi-parameter ordinal logistic modeling at 60-, 100-, 180- and 360-day follow-up.__ 
+_Chest CT abnormalities were classified as none (CT severity score [CTSS]: 0), mild (CTSS: 1 - 5), moderate (CTSS: 6 - 10) and severe (CTSS: $\geq$ 11). Additive effects of age class (below/above 60 years), sex, acute COVID-19 severity (mild., moderate, severe), inflammatory parameters (C-reactive protein [CRP], interleukin 6 [IL6], D-dimer [DDimer], ferritin [FT]), metabolic bio-markers (triglycerides [TG], high density lipoprotein [HDL], adiponectin [ADIPOQ], leptin [LEP]) and metabolic disorders (obesity, dyslipidemia and dysglycemia) recorded at the 60-day follow-up on chest CT abnormality severity was modeled by ordinal logistic regression with Akaike information criterion (AIC) driven backwards elimination of non-significant terms. Classification error (A) and accuracy of CT abnormality strata assignment expressed by Cohen's $\kappa$ statistic (B) are presented for the models' training data sets and cross-validation (10-fold, 50-repeats)._
+
+\newpage
+
+```{r fig-backward, fig.width = mm_inch(figures$backward$w), fig.height = mm_inch(figures$backward$h), fig.cap = 'Results of multi-parameter logistic ordinal modeling of CT lung abnormality severity at the 60-, 100-, 180- and 360-day follow-up as a function of age, sex, COVID-19 severity, and inflammatory and metabolic parameters.'}
+
+figures$backward$plot
+
+```
+
+__Figure \@ref(fig:fig-backward). Results of multi-parameter logistic ordinal modeling of CT lung abnormality severity at the 60-, 100-, 180- and 360-day follow-up as a function of age, sex, COVID-19 severity, and inflammatory and metabolic parameters.__ 
+_Chest CT abnormalities were classified as none (CT severity score [CTSS]: 0), mild (CTSS: 1 - 5), moderate (CTSS: 6 - 10) and severe (CTSS: $\geq$ 11). Additive effects of age class (below/above 60 years), sex, acute COVID-19 severity (mild., moderate, severe), inflammatory parameters (C-reactive protein [CRP], interleukin 6 [IL6], D-dimer [DDimer], ferritin [FT]), metabolic bio-markers (triglycerides [TG], high density lipoprotein [HDL], adiponectin [ADIPOQ], leptin [LEP]) and metabolic disorders (obesity, dyslipidemia and dysglycemia) recorded at the 60-day follow-up on chest CT abnormality severity was modeled by ordinal logistic regression with Akaike information criterion (AIC) driven backwards elimination of non-significant terms. Odds ratio (OR) with 95% confidence intervals (CI) for the explanatory variables of the final multi-parameter models in are shown in Forest plots. Point color codes for significance and model estimate sign. Points are labeled with OR and 95% CI values._
+
+\newpage
+
+# References
