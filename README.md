@@ -19,6 +19,7 @@ Required development packages are available from my GitHub:
 
 ```r
 devtools::install_github('PiotrTymoszuk/soucer')
+devtools::install_github('PiotrTymoszuk/trafo')
 devtools::install_github('PiotrTymoszuk/ExDA')
 devtools::install_github('PiotrTymoszuk/lmqc')
 devtools::install_github('PiotrTymoszuk/figur')
