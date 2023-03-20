@@ -1,10 +1,10 @@
 # covild_metabolic
-Effects of lipid turnover and glycemia on pulmonary COVID-19 recovery
+Effects of lipid turnover and glycemia on pulmonary COVID-19 recovery. The R analysis pipeline for the publication of [Sonnweber T et al.](https://www.nature.com/articles/s41598-023-29654-1) (DOI: 10.1038/s41598-023-29654-1).
 
 
 ## Terms of use
 
-To reference or use the analysis results in your publication, please cite our GitHub repository and, if available, the accompanying publication. The raw data are available upon request to the authors [Dr. Thomas Sonnweber](mailto:Thomas.Sonnweber@i-med.ac.at) or [Dr. Ivan Tancevski](mailto:Ivan.Tancevski@i-med.ac.at).
+To reference or use the analysis results in your publication, please cite our GitHub repository and our paper. The raw data are available upon request to the authors [Dr. Thomas Sonnweber](mailto:Thomas.Sonnweber@i-med.ac.at) or [Dr. Ivan Tancevski](mailto:Ivan.Tancevski@i-med.ac.at).
 
 ## Usage
 
